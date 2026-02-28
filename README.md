@@ -1,139 +1,149 @@
-# CIFAR-10 Image Classification using VGG16 (Transfer Learning)
+# Fundamentals of Deep Learning – Project Work
 
-## 📌 Project Overview
+## 📌 Overview
 
-This project classifies images from the CIFAR-10 dataset using a pre-trained VGG16 model.
-Instead of training from scratch, we reuse learned features from ImageNet and train only the final layers.
+As part of the **NVIDIA: Fundamentals of Deep Learning (Coursera)** course, I worked on hands-on deep learning tasks including image classification, neural networks, and transfer learning.
 
-This makes training faster and improves accuracy.
-
----
-
-## 📂 Dataset
-
-We use the CIFAR-10 dataset.
-
-It contains:
-
-* 60,000 color images
-* Image size: 32 × 32
-* 10 classes:
-  airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
-
-The dataset is loaded directly using TensorFlow/Keras.
+The project helped me understand how deep learning models learn patterns from images and how pretrained models can be reused to improve performance.
 
 ---
 
-## ⚙️ Steps Performed
+## 📂 Datasets Used
 
-### 1️⃣ Load Dataset
+### 1️⃣ MNIST Dataset
 
-CIFAR-10 data is loaded and split into training and testing sets.
+* 28×28 grayscale handwritten digits
+* 10 classes (0–9)
+* Used to learn basic neural network classification
 
-### 2️⃣ Normalize Images
+### 2️⃣ CIFAR-10 Dataset
 
-Pixel values are scaled from **0–255 → 0–1**
-This helps the model train faster and more accurately.
+* 32×32 color images
+* 10 object categories (airplane, cat, dog, truck, etc.)
+* Used for transfer learning with VGG16
 
-### 3️⃣ Convert Labels
+---
 
-Labels are converted into one-hot encoded format for multi-class classification.
+## 🧠 Part 1: MNIST Digit Classification
 
-### 4️⃣ Load Pretrained VGG16
+### ✔ What was done
 
-We load the VGG16 model with:
+* Loaded MNIST dataset
+* Visualized handwritten digits
+* Normalized pixel values (0–255 → 0–1)
+* Flattened images (28×28 → 784)
+* Converted labels to categorical format
+* Built a neural network using Dense layers
+* Trained and evaluated the model
 
-* pretrained ImageNet weights
-* top layers removed (`include_top=False`)
+### ✔ Model Architecture
 
-This allows us to use VGG16 as a feature extractor.
-
-### 5️⃣ Freeze Base Layers
-
-All convolution layers are frozen so their learned features remain unchanged.
-
-### 6️⃣ Add Custom Layers
-
-We add:
-
-* Flatten layer
+* Input: 784 pixels
 * Dense layer (ReLU)
-* Dropout layer (prevents overfitting)
-* Output layer (Softmax with 10 classes)
+* Dense layer (ReLU)
+* Output layer (Softmax)
 
-### 7️⃣ Compile Model
+### ✔ What I learned
 
-We use:
-
-* Optimizer: Adam
-* Loss: Categorical Crossentropy
-* Metric: Accuracy
-
-### 8️⃣ Train Model
-
-The model is trained on CIFAR-10 images.
-
-### 9️⃣ Evaluate Performance
-
-The trained model is tested on unseen images to measure accuracy.
+* How neural networks recognize patterns
+* Why normalization improves training
+* How softmax gives probability outputs
+* How accuracy and loss show learning progress
 
 ---
 
-## 🧠 Why Transfer Learning?
+## 🧠 Part 2: Understanding Activation Functions
 
-Training deep networks from scratch requires huge data and time.
+I explored different activation functions and visualized them:
 
-Transfer learning:
-✔ uses pretrained knowledge
-✔ trains faster
-✔ improves accuracy
-✔ works well with small datasets
+* Sigmoid
+* Tanh
+* ReLU
+* Leaky ReLU
+* ELU
+* Softmax
 
----
-
-## 📊 Expected Results
-
-After training for a few epochs, accuracy typically reaches:
-
-👉 **70% – 85%**
-
-This can be improved with more training and data augmentation.
+This helped me understand how neural networks introduce non-linearity and make complex decisions.
 
 ---
 
-## 🚀 How to Run
+## 🧠 Part 3: Transfer Learning with VGG16 (CIFAR-10)
 
-1. Install TensorFlow
-2. Open the notebook
-3. Run all cells in order
-4. Wait for training to complete
-5. Check test accuracy
+### ✔ What was done
 
----
+* Loaded CIFAR-10 dataset
+* Normalized image values
+* Converted labels to categorical format
+* Loaded pretrained VGG16 model (ImageNet weights)
+* Removed top classification layers
+* Froze convolution layers
+* Added custom classification layers
+* Trained model on CIFAR-10
+* Evaluated performance
 
-## ✅ Key Concepts Used
+### ✔ Why use Transfer Learning?
 
-* Deep Learning
-* Transfer Learning
-* Convolutional Neural Networks (CNN)
-* VGG16 Architecture
-* Image Classification
+Instead of training a deep network from scratch:
 
----
-
-## 📌 Notes
-
-* Ignore memory warnings if they appear.
-* Training may take time on CPU.
-* Using GPU will speed up training.
+✔ saves training time
+✔ uses learned features
+✔ improves performance with less data
 
 ---
 
-## 🎯 Future Improvements
+## 📊 Why did accuracy come around ~60%?
 
-* Add data augmentation
-* Fine-tune top VGG layers
-* Train longer for better accuracy
-* Deploy as a web app
+This is normal for a basic transfer learning setup.
+
+### Reasons:
+
+**1️⃣ Image Size Limitation**
+VGG16 was trained on **224×224 images**, but CIFAR-10 images are only **32×32**.
+Important details are lost.
+
+**2️⃣ Frozen Layers**
+We froze all convolution layers, so the model could not adapt fully to CIFAR-10 features.
+
+**3️⃣ Very Few Training Epochs**
+Training for only ~10 epochs is not enough for better adaptation.
+
+**4️⃣ No Data Augmentation**
+Without rotation, flipping, zooming etc., the model sees limited variations.
+
+**5️⃣ CIFAR-10 is harder than MNIST**
+MNIST digits are simple.
+CIFAR images have complex backgrounds and objects.
+
+👉 Because of these reasons, **60–70% accuracy is expected** in this basic setup.
+
+---
+
+## 📈 How accuracy can be improved
+
+* Resize images to 224×224
+* Unfreeze top VGG layers (fine-tuning)
+* Train for more epochs
+* Use data augmentation
+* Use CNN instead of flatten-only layers
+
+---
+
+## 🎯 Key Concepts Learned
+
+✔ Neural Networks
+✔ Activation Functions
+✔ Image Classification
+✔ CNN fundamentals
+✔ Transfer Learning
+✔ Feature extraction
+✔ Model training & evaluation
+
+---
+
+## 🚀 What this course helped me achieve
+
+This course strengthened my foundation in deep learning and helped me understand how AI models learn from images and make predictions.
+
+I gained practical experience in building, training, and evaluating deep learning models for real-world tasks.
 
 ---
